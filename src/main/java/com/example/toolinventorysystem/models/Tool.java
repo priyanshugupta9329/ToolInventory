@@ -11,16 +11,8 @@ import java.util.UUID;
 @Setter
 @Document
 public class Tool extends BaseModel{
-
-    private UUID machineId;
-
     private ToolType toolType;
-
-    //TOOL TYPE ID IS NEEDED
-
-    //QUANTITY OF EACH TOOL TYPE
-
-    private float lifecycle;
-
+    private Float lifecycle;
+    private Integer numberOfResharpen;
 
 }

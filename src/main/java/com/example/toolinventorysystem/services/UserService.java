@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
-@Service
+
 public interface UserService {
 //    public List<User> findAll();
 //    public User save(User user);
@@ -21,6 +21,6 @@ public interface UserService {
     public UserOutputDto getUser(UUID id);
     public ResponseEntity<UserOutputDto> deleteUser(UUID id);
 
-    public UserOutputDto updateUser(UserInputDto user);
+    public UserOutputDto updateUser(UUID id,UserInputDto user);
 
 }

@@ -24,19 +24,19 @@ public class MachineController {
     private final MachineServiceImpl machineServiceImpl;
 
     @PostMapping
-    public MachineOutputDto saveMachine(@RequestBody MachineInputDto machine){
+    public MachineOutputDto saveMachine(@RequestBody MachineInputDto machine) {
         return machineServiceImpl.saveMachine(machine);
     }
 
     @GetMapping
-    public List<MachineOutputDto> findAll(){
+    public List<MachineOutputDto> findAll() {
         return machineServiceImpl.findAll();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<MachineOutputDto> deleteById(@PathVariable UUID id){
+    public ResponseEntity<MachineOutputDto> deleteById(@PathVariable UUID id) {
 
         return machineServiceImpl.deleteMachine(id);
     }
-
 }
+

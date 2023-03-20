@@ -1,9 +1,11 @@
 package com.example.toolinventorysystem.Dto.OutputDto;
 
+import lombok.Data;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-
+@Data
 public class ToolLedgerOutputDto {
 //    private UUID userId;
     private String showUserId;

@@ -1,10 +1,15 @@
 package com.example.toolinventorysystem.services.serviceImpl;
 import com.example.toolinventorysystem.Dto.InputDto.UserInputDto;
 import com.example.toolinventorysystem.Dto.OutputDto.UserOutputDto;
+import com.example.toolinventorysystem.enums.Role;
+import com.example.toolinventorysystem.models.IdInformation;
 import com.example.toolinventorysystem.models.User;
+import com.example.toolinventorysystem.repository.IdInformationRepository;
 import com.example.toolinventorysystem.repository.UserRepository;
 import com.example.toolinventorysystem.services.UserService;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +20,20 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.UUID;
 
+import static com.example.toolinventorysystem.enums.Role.MANAGER;
+import static com.example.toolinventorysystem.enums.Role.OPERATOR;
+
 @Service
-@AllArgsConstructor
+@Data
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
 //    private PatchMapper patchMapper;
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final IdInformationRepository idInformationRepository;
 
     public List<UserOutputDto> findAll(){
         List<User> user1 = userRepository.findAll();
@@ -33,8 +43,23 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserOutputDto saveUser(UserInputDto user) {
+
+        boolean isAdmin = true;
+
+    // Set user's role based on who's creating them
+        if (isAdmin) {
+            user.setRole(MANAGER);
+        } else {
+            user.setRole(OPERATOR);
+        }
+
         User user1 = modelMapper.map(user, User.class);
+        IdInformation idInformation = idInformationRepository.findAll().get(0);
+        Long latestId = idInformation.getLatestUserId() + 1;
+        user1.setShowUserId(latestId);
         user1 = userRepository.save(user1);
+        idInformation.setLatestUserId(latestId);
+        idInformationRepository.save(idInformation);
         return modelMapper.map(user1, UserOutputDto.class);
     }
 
@@ -49,12 +74,11 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok(modelMapper.map(user, UserOutputDto.class));
     }
 
-    public UserOutputDto updateUser(UserInputDto user) {
-        User user1 = modelMapper.map(user, User.class);
-        User user2 = userRepository.findById(user1.getId()).orElseThrow(() -> new RuntimeException());
-        modelMapper.map(user1, user2);
-        user2 = userRepository.save(user2);
-        return modelMapper.map(user2, UserOutputDto.class);
+    public UserOutputDto updateUser(UUID id,UserInputDto input) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException());
+        modelMapper.map(input, user);
+        user = userRepository.save(user);
+        return modelMapper.map(user, UserOutputDto.class);
     }
 
 }

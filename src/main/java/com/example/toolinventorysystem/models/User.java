@@ -10,8 +10,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @Document
+@ToString
 public class User extends BaseModel{
-    private String showUserId;
+    private Long showUserId;
     private String name;
     private String password;
     private List<UUID> currentMachine;

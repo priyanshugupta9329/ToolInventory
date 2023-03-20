@@ -1,7 +1,9 @@
 package com.example.toolinventorysystem.Dto.OutputDto;
 
-import java.util.UUID;
+import lombok.Data;
 
+import java.util.UUID;
+@Data
 public class MachineOutputDto {
     private UUID id;
     private String name;

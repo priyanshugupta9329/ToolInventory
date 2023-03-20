@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
-@Service
+
 public interface ToolLedgerService {
     public List<ToolLedgerOutputDto> findAll();
     public List<ToolLedgerOutputDto> findByUserId(String showUserId);
